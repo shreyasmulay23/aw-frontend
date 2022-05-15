@@ -8,6 +8,7 @@ import { SearchOutlined } from "@material-ui/icons";
 import axios from "axios";
 import { apiContext } from "../config/api";
 import CustomGrid from "../components/CustomGrid";
+import { AWState } from "../AWContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,8 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [modelList, setModelList] = useState([]);
+
+  const { user } = AWState();
 
   const fetchAll = async (query) => {
     setLoading(true);
@@ -85,6 +88,7 @@ const Homepage = () => {
             variant="contained"
             color="primary"
             startIcon={<SearchOutlined />}
+            style={{ borderRadius: "64px" }}
           ></Button>
         </form>
       </Container>

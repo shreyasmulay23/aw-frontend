@@ -6,6 +6,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Modelpage from "./pages/Modelpage";
 
 import { makeStyles } from "@material-ui/core";
+import Alert from "./components/Alert";
 
 function App() {
   const useStyles = makeStyles({
@@ -13,6 +14,7 @@ function App() {
       backgroundColor: "white",
       color: "black",
       minHeight: "100vh",
+      fontFamily: "Poppins",
     },
   });
 
@@ -24,6 +26,7 @@ function App() {
         <Route path="/" component={Homepage} exact />
         <Route path="/models/:name" component={Modelpage} />
       </div>
+      <Alert />
     </BrowserRouter>
   );
 }
