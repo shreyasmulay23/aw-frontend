@@ -1,5 +1,3 @@
-const API_KEY = "0HPZNJ7-SK94QFP-N19SSMV-RA0WQPH";
-
 const getAllNames = "https://api.anything.world/poly-names";
 
 const getSingleName = (name) =>
@@ -12,5 +10,4 @@ export const apiContext = {
   getAllNames,
   getSingleName,
   searchByNames,
-  API_KEY,
 };

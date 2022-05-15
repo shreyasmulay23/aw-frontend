@@ -75,7 +75,7 @@ export default function UserSidebar() {
     right: false,
   });
 
-  const { user, setAlert } = AWState();
+  const { user, setAlert, apiKey, setApiKey } = AWState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -95,6 +95,7 @@ export default function UserSidebar() {
       type: "success",
       message: "Logout Successfull !",
     });
+    setApiKey("");
     toggleDrawer();
   };
 
@@ -161,6 +162,18 @@ export default function UserSidebar() {
                 >
                   {user.displayName || user.email}
                 </span>
+                <span
+                  style={{
+                    width: "100%",
+                    fontSize: 15,
+                    textAlign: "center",
+                    fontWeight: "bolder",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  API Key: {apiKey}
+                </span>
+
                 <div className={classes.watchlist}>
                   <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
                     Liked Models

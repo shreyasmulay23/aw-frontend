@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { AWState } from "../AWContext";
 import { apiContext } from "../config/api";
 
 const Modelpage = () => {
@@ -8,10 +9,12 @@ const Modelpage = () => {
   const [decodedName, setDecodedName] = useState(decodeURIComponent(name));
   console.log(decodeURIComponent(name));
 
+  const { apiKey } = AWState();
+
   const fetchSingleModel = async () => {
     try {
       const { data } = await axios.get(apiContext.getSingleName(name), {
-        headers: { API_KEY: apiContext.API_KEY },
+        headers: { API_KEY: apiKey },
       });
       console.log(data);
     } catch (error) {
