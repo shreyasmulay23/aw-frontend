@@ -12,6 +12,7 @@ import { AWState } from "../AWContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { errorMessages } from "../utils/errorMessages";
+import CachedIcon from "@material-ui/icons/Cached";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 15,
     width: "12%",
     alignItems: "center",
+  },
+  cacheBtn: {
+    marginLeft: 15,
+    marginTop: 15,
+    width: "5%",
+    alignItems: "center",
+    display: "none",
   },
 }));
 
@@ -106,6 +114,23 @@ const Homepage = () => {
     }
   };
 
+  const clearCache = async () => {
+    try {
+      await axios.get(apiContext.clearCache);
+      setAlert({
+        open: true,
+        message: `Cache Cleared Successfully.`,
+        type: "success",
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: "Error in clearing cache.",
+        type: "error",
+      });
+    }
+  };
+
   const classes = useStyles();
   return (
     <>
@@ -136,6 +161,14 @@ const Homepage = () => {
                   variant="contained"
                   color="primary"
                   startIcon={<SearchOutlined />}
+                  style={{ borderRadius: "64px" }}
+                ></Button>
+                <Button
+                  className={classes.cacheBtn}
+                  onClick={() => clearCache()}
+                  variant="contained"
+                  color="primary"
+                  startIcon={<CachedIcon />}
                   style={{ borderRadius: "64px" }}
                 ></Button>
               </form>
