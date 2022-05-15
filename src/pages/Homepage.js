@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { Container, CircularProgress } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { SearchOutlined } from "@material-ui/icons";
 import axios from "axios";
@@ -11,6 +11,7 @@ import CustomGrid from "../components/CustomGrid";
 import { AWState } from "../AWContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { errorMessages } from "../utils/errorMessages";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,8 +62,23 @@ const Homepage = () => {
         headers: { API_KEY: apiKey },
       });
       setModelList(data);
+      if (data && data.length === 0) {
+        setAlert({
+          open: true,
+          message: errorMessages.NOT_FOUND,
+          type: "warning",
+        });
+        setSearchQuery("");
+      }
     } catch (error) {
-      console.log(error.message);
+      if (error.message === "Request failed with status code 404") {
+        setAlert({
+          open: true,
+          message: errorMessages.NOT_FOUND,
+          type: "warning",
+        });
+        setSearchQuery("");
+      }
     }
     setLoading(false);
   };

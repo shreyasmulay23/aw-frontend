@@ -15,6 +15,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     fontFamily: "Poppins",
+    backgroundImage:
+      "radial-gradient(circle farthest-corner at 0 30%,rgba(0,255,77,.24),rgba(0,255,209,.24) 50%,rgba(0,255,209,.24));",
   },
   profile: {
     flex: 1,
@@ -33,7 +35,7 @@ const useStyles = makeStyles({
     width: 200,
     height: 200,
     cursor: "pointer",
-    backgroundColor: "#00ff4d",
+    backgroundImage: "linear-gradient(0deg,#00ffd1,#00ff4d)",
     objectFit: "contain",
     color: "black",
   },
@@ -133,7 +135,7 @@ export default function UserSidebar() {
               width: 38,
               marginLeft: 15,
               cursor: "pointer",
-              backgroundColor: "#00ff4d",
+              backgroundImage: "linear-gradient(0deg,#00ffd1,#00ff4d)",
               color: "black",
             }}
             src={user.photoURL}

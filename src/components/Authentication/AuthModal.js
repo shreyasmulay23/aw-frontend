@@ -58,28 +58,6 @@ export default function AuthModal() {
     setValue(newValue);
   };
 
-  // const signInWithGoogle = () => {
-  //   console.log("clicked signin");
-  //   signInWithPopup(auth, new GoogleAuthProvider())
-  //     .then((res) => {
-  //       setAlert({
-  //         open: true,
-  //         message: `Sign Up Successful. Welcome ${res.user.email}`,
-  //         type: "success",
-  //       });
-
-  //       handleClose();
-  //     })
-  //     .catch((error) => {
-  //       setAlert({
-  //         open: true,
-  //         message: error.message,
-  //         type: "error",
-  //       });
-  //       return;
-  //     });
-  // };
-
   return (
     <div className={classes.container}>
       <Button
@@ -129,14 +107,6 @@ export default function AuthModal() {
             </AppBar>
             {value === 0 && <Login handleClose={handleClose} />}
             {value === 1 && <Signup handleClose={handleClose} />}
-
-            {/* <Box className={classes.google}>
-              <span>OR</span>
-              <GoogleButton
-                style={{ width: "100%", outline: "none" }}
-                onClick={signInWithGoogle}
-              />
-            </Box> */}
           </div>
         </Fade>
       </Modal>

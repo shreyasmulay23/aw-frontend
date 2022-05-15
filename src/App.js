@@ -11,10 +11,11 @@ import Alert from "./components/Alert";
 function App() {
   const useStyles = makeStyles({
     App: {
-      backgroundColor: "white",
       color: "black",
       minHeight: "100vh",
       fontFamily: "Poppins",
+      backgroundImage:
+        "linear-gradient(315deg,rgba(0,253,255,.48),rgba(255,89,233,.48) 40%,rgba(255,89,233,0) 85%)",
     },
   });
 
