@@ -9,7 +9,7 @@ import axios from "axios";
 import { apiContext } from "../config/api";
 import CustomGrid from "../components/CustomGrid";
 import { AWState } from "../AWContext";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { errorMessages } from "../utils/errorMessages";
 import CachedIcon from "@material-ui/icons/Cached";
@@ -81,7 +81,13 @@ const Homepage = () => {
         return;
       }
       const upVotesData = await getUpVotesOnRender();
-      listHandler.updateListWithVotes(data, upVotesData);
+      const mapOfUserActions = await getVotesFromUser();
+      listHandler.updateListWithParams(
+        data,
+        upVotesData,
+        mapOfUserActions.userVotes,
+        mapOfUserActions.flaggedModels
+      );
       setModelList(data);
     } catch (error) {
       if (error.message === "Request failed with status code 404") {
@@ -150,6 +156,29 @@ const Homepage = () => {
       console.log(error);
     }
     return upVotesData;
+  };
+
+  const getVotesFromUser = async () => {
+    let map = {};
+    try {
+      const userProfileRef = doc(db, "userProfile", user?.uid);
+      const docSnap = await getDoc(userProfileRef);
+      if (docSnap.exists()) {
+        map.userVotes = docSnap.data().votes;
+        map.flaggedModels = docSnap.data().flaggedModels;
+        if (!map.userVotes) {
+          map.userVotes = [];
+        }
+        if (!map.flaggedModels) {
+          map.flaggedModels = [];
+        }
+      } else {
+        console.log("This user has not voted yet on any model");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return map;
   };
 
   const classes = useStyles();

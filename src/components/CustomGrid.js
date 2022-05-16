@@ -11,6 +11,10 @@ function CustomGrid(props) {
   const { loading, modelList } = props;
   const history = useHistory();
 
+  const handleVote = async (event, itemObj) => {
+    console.log(itemObj);
+  };
+
   return (
     <Grid container style={{}}>
       {(loading ? Array.from(new Array(5)) : modelList).map((item, index) => (
@@ -52,13 +56,16 @@ function CustomGrid(props) {
               </Typography>
               <div style={{ marginLeft: 10, display: "flex" }}>
                 <span style={{ display: "flex" }}>
-                  <ThumbUpAltIcon />
+                  <ThumbUpAltIcon
+                    color={item.isVoted ? "primary" : "action"}
+                    onClick={(e) => handleVote(e, item)}
+                  />
                   <span style={{ marginLeft: 5 }}>{`${
                     item.upVotes === 0 ? "" : item.upVotes
                   }`}</span>
                 </span>
                 <span style={{ marginLeft: "auto" }}>
-                  <FlagIcon />
+                  <FlagIcon color={item.isFlagged ? "secondary" : "action"} />
                 </span>
               </div>
             </Box>
