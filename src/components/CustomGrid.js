@@ -4,6 +4,8 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useHistory } from "react-router-dom";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import FlagIcon from "@material-ui/icons/Flag";
 
 function CustomGrid(props) {
   const { loading, modelList } = props;
@@ -48,6 +50,17 @@ function CustomGrid(props) {
               >
                 {item.author}
               </Typography>
+              <div style={{ marginLeft: 10, display: "flex" }}>
+                <span style={{ display: "flex" }}>
+                  <ThumbUpAltIcon />
+                  <span style={{ marginLeft: 5 }}>{`${
+                    item.upVotes === 0 ? "" : item.upVotes
+                  }`}</span>
+                </span>
+                <span style={{ marginLeft: "auto" }}>
+                  <FlagIcon />
+                </span>
+              </div>
             </Box>
           ) : (
             <Box pt={0.5}>

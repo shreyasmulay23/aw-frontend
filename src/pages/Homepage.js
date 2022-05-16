@@ -9,10 +9,11 @@ import axios from "axios";
 import { apiContext } from "../config/api";
 import CustomGrid from "../components/CustomGrid";
 import { AWState } from "../AWContext";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { errorMessages } from "../utils/errorMessages";
 import CachedIcon from "@material-ui/icons/Cached";
+import { listHandler } from "../utils/listhandler";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +70,6 @@ const Homepage = () => {
       const { data } = await axios.get(apiContext.searchByNames(query), {
         headers: { API_KEY: apiKey },
       });
-      setModelList(data);
       if (data && data.length === 0) {
         setAlert({
           open: true,
@@ -77,7 +77,12 @@ const Homepage = () => {
           type: "warning",
         });
         setSearchQuery("");
+        setModelList([]);
+        return;
       }
+      const upVotesData = await getUpVotesOnRender();
+      listHandler.updateListWithVotes(data, upVotesData);
+      setModelList(data);
     } catch (error) {
       if (error.message === "Request failed with status code 404") {
         setAlert({
@@ -91,14 +96,15 @@ const Homepage = () => {
     setLoading(false);
   };
 
-  const handleClick = async () => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     await fetchAll(searchQuery);
   };
 
   const addAPIKeyToDB = async () => {
-    const apiKeyDBRef = doc(db, "apiKey", user.uid);
+    const userProfileRef = doc(db, "userProfile", user.uid);
     try {
-      await setDoc(apiKeyDBRef, { apiKey: key }, { merge: true });
+      await setDoc(userProfileRef, { apiKey: key }, { merge: true });
       setAlert({
         open: true,
         message: `API_KEY ${key} successfully added. You can use the app now. !`,
@@ -131,6 +137,21 @@ const Homepage = () => {
     }
   };
 
+  const getUpVotesOnRender = async () => {
+    const upVotesData = [];
+    try {
+      const querySnapshot = await getDocs(collection(db, "upVotes"));
+      querySnapshot.forEach((doc) => {
+        let obj = {};
+        obj[doc.id] = doc.data().votes ? doc.data().votes : 0;
+        upVotesData.push(obj);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    return upVotesData;
+  };
+
   const classes = useStyles();
   return (
     <>
@@ -157,7 +178,7 @@ const Homepage = () => {
                 />
                 <Button
                   className={classes.button}
-                  onClick={() => handleClick()}
+                  onClick={(e) => handleClick(e)}
                   variant="contained"
                   color="primary"
                   startIcon={<SearchOutlined />}
