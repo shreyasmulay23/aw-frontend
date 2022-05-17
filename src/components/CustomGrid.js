@@ -7,13 +7,58 @@ import { useHistory } from "react-router-dom";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import FlagIcon from "@material-ui/icons/Flag";
 import { Tooltip } from "@material-ui/core";
+import { db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { AWState } from "../AWContext";
 
 function CustomGrid(props) {
   const { loading, modelList } = props;
   const history = useHistory();
 
+  const { user, userVotes, flaggedModels, setAlert } = AWState();
+
   const handleVote = async (event, itemObj) => {
-    console.log(itemObj);
+    itemObj.isVoted = !itemObj.isVoted;
+    const userProfileRef = doc(db, "userProfile", user.uid);
+    const upVotesRef = doc(db, "upVotes", itemObj._id);
+    if (itemObj.isVoted) {
+      itemObj.upVotes = itemObj.upVotes + 1;
+    } else {
+      itemObj.upVotes = itemObj.upVotes !== 0 ? itemObj.upVotes - 1 : 0;
+    }
+    try {
+      await setDoc(
+        userProfileRef,
+        {
+          votes: !itemObj.isVoted
+            ? userVotes.filter((vote) => vote !== itemObj?._id)
+            : userVotes
+            ? [...userVotes, itemObj?._id]
+            : [itemObj?._id],
+        },
+        { merge: true }
+      );
+      await setDoc(
+        upVotesRef,
+        {
+          votes: itemObj.upVotes,
+        },
+        { merge: true }
+      );
+      setAlert({
+        open: true,
+        message: itemObj.isVoted
+          ? `Successfully voted`
+          : ` Successfully un voted!`,
+        type: "success",
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -69,7 +114,6 @@ function CustomGrid(props) {
                   <Tooltip title={item.flagReason ? item.flagReason : ""} arrow>
                     <FlagIcon color={item.isFlagged ? "secondary" : "action"} />
                   </Tooltip>
-                  {/* <FlagIcon color={item.isFlagged ? "secondary" : "action"} /> */}
                 </span>
               </div>
             </Box>

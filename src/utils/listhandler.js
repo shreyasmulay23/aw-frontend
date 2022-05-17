@@ -7,8 +7,10 @@ const updateListWithParams = (
   if (modelList && modelList.length > 0) {
     modelList.forEach((perModel) => {
       const voteData = votesData.find((it) => it[perModel._id]);
-      perModel.isVoted = userVotes.includes(perModel._id);
-      const flaggedModel = flaggedModels.find((it) => it[perModel._id]);
+      perModel.isVoted = userVotes ? userVotes.includes(perModel._id) : false;
+      const flaggedModel = flaggedModels
+        ? flaggedModels.find((it) => it[perModel._id])
+        : null;
       perModel.isFlagged = false;
       perModel.flagReason = "";
       if (flaggedModel) {
