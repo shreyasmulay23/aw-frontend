@@ -15,6 +15,8 @@ const AWContext = ({ children }) => {
   });
 
   const [apiKey, setApiKey] = useState("");
+  const [userVotes, setUserVotes] = useState([]);
+  const [flaggedModels, setFlaggedModels] = useState([]);
 
   useEffect(() => {
     if (user) {
@@ -22,8 +24,16 @@ const AWContext = ({ children }) => {
       var unsubscribe = onSnapshot(userProfileRef, (info) => {
         if (info.exists()) {
           setApiKey(info.data().apiKey);
+          setUserVotes(info.data().votes);
+          setFlaggedModels(info.data().flaggedModels);
+          if (!userVotes) {
+            setUserVotes([]);
+          }
+          if (!flaggedModels) {
+            setFlaggedModels([]);
+          }
         } else {
-          console.log("No API Key set for currenct user");
+          console.log("no data exists for user");
         }
       });
 
@@ -50,6 +60,8 @@ const AWContext = ({ children }) => {
         setAlert,
         apiKey,
         setApiKey,
+        userVotes,
+        flaggedModels,
       }}
     >
       {children}

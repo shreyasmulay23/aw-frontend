@@ -62,7 +62,8 @@ const Homepage = () => {
   const [modelList, setModelList] = useState([]);
   const [key, setKey] = useState("");
 
-  const { user, apiKey, setApiKey, setAlert } = AWState();
+  const { user, apiKey, setApiKey, setAlert, userVotes, flaggedModels } =
+    AWState();
 
   const fetchAll = async (query) => {
     setLoading(true);
@@ -81,12 +82,11 @@ const Homepage = () => {
         return;
       }
       const upVotesData = await getUpVotesOnRender();
-      const mapOfUserActions = await getVotesFromUser();
       listHandler.updateListWithParams(
         data,
         upVotesData,
-        mapOfUserActions.userVotes,
-        mapOfUserActions.flaggedModels
+        userVotes,
+        flaggedModels
       );
       setModelList(data);
     } catch (error) {
@@ -156,29 +156,6 @@ const Homepage = () => {
       console.log(error);
     }
     return upVotesData;
-  };
-
-  const getVotesFromUser = async () => {
-    let map = {};
-    try {
-      const userProfileRef = doc(db, "userProfile", user?.uid);
-      const docSnap = await getDoc(userProfileRef);
-      if (docSnap.exists()) {
-        map.userVotes = docSnap.data().votes;
-        map.flaggedModels = docSnap.data().flaggedModels;
-        if (!map.userVotes) {
-          map.userVotes = [];
-        }
-        if (!map.flaggedModels) {
-          map.flaggedModels = [];
-        }
-      } else {
-        console.log("This user has not voted yet on any model");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    return map;
   };
 
   const classes = useStyles();
