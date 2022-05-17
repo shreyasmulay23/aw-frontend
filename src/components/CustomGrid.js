@@ -6,6 +6,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { useHistory } from "react-router-dom";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import FlagIcon from "@material-ui/icons/Flag";
+import { Tooltip } from "@material-ui/core";
 
 function CustomGrid(props) {
   const { loading, modelList } = props;
@@ -65,7 +66,10 @@ function CustomGrid(props) {
                   }`}</span>
                 </span>
                 <span style={{ marginLeft: "auto" }}>
-                  <FlagIcon color={item.isFlagged ? "secondary" : "action"} />
+                  <Tooltip title={item.flagReason ? item.flagReason : ""} arrow>
+                    <FlagIcon color={item.isFlagged ? "secondary" : "action"} />
+                  </Tooltip>
+                  {/* <FlagIcon color={item.isFlagged ? "secondary" : "action"} /> */}
                 </span>
               </div>
             </Box>
