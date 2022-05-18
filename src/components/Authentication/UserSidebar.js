@@ -4,8 +4,8 @@ import Drawer from "@material-ui/core/Drawer";
 import { Avatar, Button } from "@material-ui/core";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { doc, setDoc } from "firebase/firestore";
 import { AWState } from "../../AWContext";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const useStyles = makeStyles({
   container: {
@@ -30,6 +30,7 @@ const useStyles = makeStyles({
     height: "8%",
     width: "100%",
     marginTop: 20,
+    borderRadius: "64px",
   },
   picture: {
     width: 200,
@@ -38,30 +39,6 @@ const useStyles = makeStyles({
     backgroundImage: "linear-gradient(0deg,#00ffd1,#00ff4d)",
     objectFit: "contain",
     color: "black",
-  },
-  watchlist: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: "grey",
-    borderRadius: 10,
-    padding: 15,
-    paddingTop: 10,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 12,
-    overflowY: "scroll",
-  },
-  coin: {
-    padding: 10,
-    borderRadius: 5,
-    color: "black",
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#EEBC1D",
-    boxShadow: "0 0 3px black",
   },
   divContainer: {
     marginLeft: "auto",
@@ -100,29 +77,6 @@ export default function UserSidebar() {
     setApiKey("");
     toggleDrawer();
   };
-
-  // const removeFromWatchlist = async (coin) => {
-  //   const coinRef = doc(db, "watchlist", user.uid);
-  //   try {
-  //     await setDoc(
-  //       coinRef,
-  //       { coins: watchlist.filter((wish) => wish !== coin?.id) },
-  //       { merge: true }
-  //     );
-
-  //     setAlert({
-  //       open: true,
-  //       message: `${coin.name} Removed from the Watchlist !`,
-  //       type: "success",
-  //     });
-  //   } catch (error) {
-  //     setAlert({
-  //       open: true,
-  //       message: error.message,
-  //       type: "error",
-  //     });
-  //   }
-  // };
 
   return (
     <div className={classes.divContainer}>
@@ -175,36 +129,14 @@ export default function UserSidebar() {
                 >
                   API Key: {apiKey}
                 </span>
-
-                <div className={classes.watchlist}>
-                  <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
-                    Liked Models
-                  </span>
-                  {/* {coins.map((coin) => {
-                    if (watchlist.includes(coin.id))
-                      return (
-                        <div className={classes.coin}>
-                          <span>{coin.name}</span>
-                          <span style={{ display: "flex", gap: 8 }}>
-                            {symbol}{" "}
-                            {numberWithCommas(coin.current_price.toFixed(2))}
-                            <AiFillDelete
-                              style={{ cursor: "pointer" }}
-                              fontSize="16"
-                              onClick={() => removeFromWatchlist(coin)}
-                            />
-                          </span>
-                        </div>
-                      );
-                    else return <></>;
-                  })} */}
-                </div>
               </div>
               <Button
                 variant="contained"
                 className={classes.logout}
                 onClick={logOut}
+                startIcon={<ExitToAppIcon />}
                 color="secondary"
+                style={{ backgroundColor: "red" }}
               >
                 Log Out
               </Button>
