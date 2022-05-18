@@ -62,7 +62,7 @@ const Homepage = () => {
   const [modelList, setModelList] = useState([]);
   const [key, setKey] = useState("");
 
-  const { user, apiKey, setApiKey, setAlert, userVotes, flaggedModels } =
+  const { user, apiKey, setApiKey, setAlert, userVotes, userFlaggedModels } =
     AWState();
 
   const fetchAll = async (query) => {
@@ -86,7 +86,7 @@ const Homepage = () => {
         data,
         upVotesData,
         userVotes,
-        flaggedModels
+        userFlaggedModels
       );
       setModelList(data);
     } catch (error) {

@@ -16,7 +16,7 @@ const AWContext = ({ children }) => {
 
   const [apiKey, setApiKey] = useState("");
   const [userVotes, setUserVotes] = useState([]);
-  const [flaggedModels, setFlaggedModels] = useState([]);
+  const [userFlaggedModels, setUserFlaggedModels] = useState([]);
 
   useEffect(() => {
     if (user) {
@@ -25,12 +25,12 @@ const AWContext = ({ children }) => {
         if (info.exists()) {
           setApiKey(info.data().apiKey);
           setUserVotes(info.data().votes);
-          setFlaggedModels(info.data().flaggedModels);
+          setUserFlaggedModels(info.data().flaggedModels);
           if (!userVotes) {
             setUserVotes([]);
           }
-          if (!flaggedModels) {
-            setFlaggedModels([]);
+          if (!userFlaggedModels) {
+            setUserFlaggedModels([]);
           }
         } else {
           console.log("no data exists for user");
@@ -61,7 +61,7 @@ const AWContext = ({ children }) => {
         apiKey,
         setApiKey,
         userVotes,
-        flaggedModels,
+        userFlaggedModels,
       }}
     >
       {children}
